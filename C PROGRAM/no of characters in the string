@@ -1,0 +1,12 @@
+
+# include <stdio.h>
+void main() 
+{
+    char string[100];
+    int i = 0;
+    printf("Enter the string: ");
+    scanf("%s",string);
+    while(string[i] != '\0') 
+       i++;
+    printf("Total number of characters in the string is: %d", i);
+  }
