@@ -1,0 +1,31 @@
+
+#include <stdio.h>
+
+int main()
+{
+    int n;
+    int arr[10][10];
+    int i, j, sum = 0;
+
+    printf("Enter the order of the matrix: ");
+    scanf("%d", &n);
+
+    printf("Enter the elements of the matrix:\n");
+    for(i = 0; i < n; i++)
+    {
+        for(j = 0; j < n; j++)
+        {
+            scanf("%d", &arr[i][j]);
+        }
+    }
+
+    // Find the sum of diagonal elements
+    for(i = 0; i < n; i++)
+    {
+        sum = sum + arr[i][i];
+    }
+
+    printf("\nThe sum of diagonal elements = %d", sum);
+
+    return 0;
+}
