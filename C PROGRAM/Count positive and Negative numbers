@@ -1,0 +1,23 @@
+
+#include <stdio.h>
+int main(){
+  int positive=0,negative=0,zero=0,n,arr[50],i;
+  printf("enter the number of elements: \n");
+  scanf("%d",&n);
+  for(i=0;i<n;i++){
+    scanf("%d",&arr[i]);
+    if(arr[i]>0){
+      positive++;
+    }
+    else if(arr[i]<0){
+      negative++;
+    }
+    else if (arr[i] == 0){
+      zero++;
+    }
+    
+  }
+  printf("the positive count is: %d \n",positive);
+  printf("the negative count is: %d\n",negative);
+  printf("the zero count is: %d",zero);
+}
