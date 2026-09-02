@@ -1,0 +1,62 @@
+START
+
+STEP 1: Define data structure
+    STRUCT Building
+        name            : string
+        baseline_kw     : float      // idle/base load
+        occupancy_factor: float      // multiplier for peak hours
+        readings[24]    : float      // hourly kW readings
+        avg_load        : float
+        peak_load       : float
+
+STEP 2: Initialize campus
+    Create array of Building objects (e.g. Academic Block, Library,
+    Hostel, Labs, Admin) with fixed baseline_kw and occupancy_factor
+    for each.
+
+STEP 3: Simulate 24-hour readings (per building)
+    FOR each building B:
+        FOR hour = 0 TO 23:
+            load = B.baseline_kw
+            IF hour >= 8 AND hour <= 18:              // peak/occupied hours
+                load = load + (B.baseline_kw * B.occupancy_factor)
+            noise = random value in range (-0.05, 0.15) * B.baseline_kw
+            load = load + noise
+            IF random() > 0.93:                        // simulated anomaly
+                load = load + B.baseline_kw * random(0.8, 1.5)
+            IF load < 0: load = 0
+            B.readings[hour] = load
+
+STEP 4: Compute statistics (per building)
+    FOR each building B:
+        B.avg_load  = SUM(B.readings) / 24
+        B.peak_load = MAX(B.readings)
+
+STEP 5: Anomaly detection
+    THRESHOLD_MULTIPLIER = 1.6
+    FOR each building B:
+        FOR each reading R in B.readings:
+            IF R > (B.avg_load * THRESHOLD_MULTIPLIER):
+                FLAG R as anomalous
+
+STEP 6: Generate energy-saving recommendations
+    FOR each building B:
+        IF B.peak_load > (B.avg_load * THRESHOLD_MULTIPLIER):
+            PRINT "Inspect equipment left running after hours in B.name"
+        IF B.baseline_kw > HIGH_BASELINE_LIMIT:
+            PRINT "Schedule HVAC/lighting off in B.name during low-occupancy hours"
+        IF no conditions triggered:
+            PRINT "B.name operating within efficiency range"
+
+STEP 7: Compute total campus consumption
+    total = 0
+    FOR each building B:
+        total = total + SUM(B.readings)
+
+STEP 8: Generate report
+    PRINT per-building avg load, peak load, 24h total
+    PRINT total campus consumption
+    PRINT anomaly list
+    PRINT recommendations
+
+END
