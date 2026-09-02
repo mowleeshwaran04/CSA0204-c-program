@@ -1,0 +1,11 @@
+What main() actually does, line by line:
+
+srand(42) — seeds the random generator with a fixed value so every run produces the same "random" numbers. This is why output is reproducible instead of different every time.
+Builds the campus array — a Building struct array of 5 buildings, each initialized with {name, baseline_kw, occupancy_factor}. readings[], avg_load, peak_load, total_kwh are left as garbage/zero until filled in.
+Simulation loop — calls simulate_readings(&campus[i]) for each building. This is where the actual 24-hour data gets generated (baseline + peak-hour bump + noise + random anomaly chance), and where avg_load, peak_load, total_kwh get computed and stored back into the struct.
+Per-building report loop — walks the array again, printing average/peak/total for each building, and accumulates total_campus.
+Anomaly loop — calls detect_anomalies() per building, which re-scans that building's 24 readings and prints any hour where load exceeded avg_load × 1.6.
+Recommendation loop — calls recommend() per building, which checks two rules (peak spike, high baseline) and prints advice accordingly.
+return 0 — signals successful exit to the OS.
+
+One thing worth knowing if you're going to explain this in a viva: the reason it's split into three separate loops (report / anomaly / recommendation) instead of one combined loop is just readability — functionally you could merge them into a single loop over campus[] and it'd run identically, just less organized as output.
